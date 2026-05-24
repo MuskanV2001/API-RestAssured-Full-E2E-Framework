@@ -23,7 +23,17 @@ jobs:
       run: mvn clean test -DProfile=userProfileTest
 
     - name: Upload a Build Artifact
+      if: always()
       uses: actions/upload-artifact@v7.0.1
       with:
         name: Logs
         path: logs/
+
+    - name: Publish Test Reports
+      if: always()
+      uses: dorny/test-reporter@v1
+      with:
+        name: TestNG Execution Results
+        path: target/surefire-reports/junitreports/TEST-*.xml
+        reporter: java-junit
+      
